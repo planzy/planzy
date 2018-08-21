@@ -8,23 +8,25 @@ function confirmLogin(res) {
   if (res.login === 'OK') window.location.href = '/';
 }
 
-const makeFetch = () => ({
+const makeFetch = (username, password) => ({
   method: 'POST',
-  body: {
-    username: grab('username').value,
-    password: grab('password').value,
-  },
+  headers: { 'Content-Type': 'application/json; charset=utf-8' },
+  body: JSON.stringify({ username, password }),
   credentials: 'include',
 });
 
 grab('sign-in').addEventListener('click', () => {
-  fetch('/signin', makeFetch())
+  const username = grab('username').value;
+  const password = grab('password').value;
+  fetch('/signin', makeFetch(username, password))
     .then(res => res.json())
     .then(confirmLogin);
 });
 
 grab('sign-up').addEventListener('click', () => {
-  fetch('/signup', makeFetch())
+  const username = grab('username').value;
+  const password = grab('password').value;
+  fetch('/signup', makeFetch(username, password))
     .then(res => res.json())
     .then(confirmLogin);
 });

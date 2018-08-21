@@ -46,7 +46,7 @@ module.exports = {
         if (err) {
           return res.redirect('/login');
         }
-        res.locals.username = decoded.username;
+        res.locals.username = decoded.sub;
         return next();
       },
     );

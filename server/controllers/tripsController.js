@@ -10,10 +10,16 @@ const tripsController = {
   },
   addTrip: (req, res) => {
     const query = 'INSERT INTO trips (user_id, name) VALUES($1, $2) RETURNING *';
-    const values = [`${req.body.userId}`, `${req.body.name}`];
+    const values = [req.body.user_id, req.body.name];
     db.query(query, values, (err, results) => {
-      if (err) res.send(err);
-      res.json(results.rows);
+      if (err) {
+        return res.status(400).json({
+          login: 'FAILED',
+          reason: err.message,
+        });
+      } else {
+        return res.json(results.rows);
+      }
     });
   }
 }

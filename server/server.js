@@ -2,9 +2,11 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const tripsController = require('./controllers/tripsController');
 
+const trips = require('./controllers/tripsController');
 const user = require('./controllers/userController');
+const dest = require('./controllers/destinationsController');
+const list = require('./controllers/listController');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,13 +14,22 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.get('/', user.checkLogin);
+app.get('/', user.checkSession);
 
-app.post('/signin', user.signIn);
-app.post('/signup', user.signUp);
+//User Routes
+app.post('/signin', user.signIn, user.startSession);
+app.post('/signup', user.signUp, user.addUser, user.startSession);
+app.post('/users', user.addUser);
 
-app.post('/trips', tripsController.addTrip);
-app.get('/trips', tripsController.getTrips);
+// Trip Routes
+app.post('/trips', trips.addTrip);
+app.get('/trips', trips.getTrips);
+
+// Destination routes
+app.post('/dest', dest.addDestination);
+
+//List routes
+app.post('/list', list.addListItem);
 
 app.use(express.static(
   path.resolve(__dirname, '../', 'client'),

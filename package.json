@@ -25,6 +25,7 @@
     "express": "^4.16.3",
     "nodemon": "^1.18.3",
     "pg": "^7.4.3",
+    "jsonwebtoken": "^8.3.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   },

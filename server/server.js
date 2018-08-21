@@ -11,10 +11,10 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.get('/', user.checkLogin);
+app.get('/', user.checkSession);
 
-app.post('/signin', user.signIn);
-app.post('/signup', user.signUp);
+app.post('/signin', user.signIn, user.startSession);
+app.post('/signup', user.signUp, user.startSession);
 
 app.use(express.static(
   path.resolve(__dirname, '../', 'client'),

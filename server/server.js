@@ -13,6 +13,9 @@ app.use(cookieParser());
 
 app.get('/', user.checkLogin);
 
+app.post('/signin', user.signIn);
+app.post('/signup', user.signUp);
+
 app.use(express.static(
   path.resolve(__dirname, '../', 'client'),
   { extensions: ['html'] },

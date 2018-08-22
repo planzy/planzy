@@ -13,8 +13,8 @@ const listController = {
     });
   },
   addListItem: (req, res) => {
-    const query = 'INSERT INTO list_items (dest_id, name, sequence) VALUES($1, $2, $3) RETURNING *'
-    const values = [req.body.dest_id, req.body.name, req.body.sequence];
+    const query = 'INSERT INTO list_items (dest_id, name) VALUES($1, $2) RETURNING *'
+    const values = [req.body.dest_id, req.body.name];
     db.query(query, values, (err, results) => {
       if (err) {
         res.status(400).json({

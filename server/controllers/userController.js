@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const db = require('../db/index');
 
 const SECRET = process.env.JWT_SECRET;
 const TTL = Number(process.env.JWT_TTL_SECONDS);
@@ -55,4 +56,19 @@ module.exports = {
   renderLogin: (req, res) => {
     res.send("Here's the login page!");
   },
+
+  addUser: (req, res, next) => {
+    const query = `INSERT INTO users (username, password) VALUES($1, $2) RETURNING *`;
+    const values = [req.body.username, req.body.password];
+    db.query(query, values, (err, results) => {
+      if (err) {
+        res.status(400).send(json({
+          login: 'FAILED',
+          reason: err.message,
+        }));
+      } else {
+        next();
+      }
+    });
+  }
 };

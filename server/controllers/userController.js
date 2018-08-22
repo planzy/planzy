@@ -58,15 +58,17 @@ module.exports = {
   },
 
   addUser: (req, res, next) => {
+    console.log(req.body);
     const query = `INSERT INTO users (username, password) VALUES($1, $2) RETURNING *`;
     const values = [req.body.username, req.body.password];
     db.query(query, values, (err, results) => {
       if (err) {
-        res.status(400).send(json({
+        res.status(400).json({
           login: 'FAILED',
           reason: err.message,
-        }));
+        });
       } else {
+        res.status(200).send(results.rows);
         next();
       }
     });

@@ -2,7 +2,14 @@ const db = require('../db/index');
 
 const destinationsController = {
   getDestinations: (req, res) => {
-    const query = `SELECT * FROM destinations WHERE trip_id=${req.body.userId}`
+    const query = `SELECT * FROM destinations WHERE trip_id=${req.body.trip_id}`;
+    db.query(query, '', (err, results) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(results.rows);
+      }
+    });
   },
   addDestination: (req, res) => {
     const query = `
@@ -17,6 +24,19 @@ const destinationsController = {
         });
       } else {
         res.status(200).send(results.rows);
+      }
+    });
+  },
+  deleteDestination: (req, res) => {
+    const query = `DELETE FROM destinations WHERE id=${req.body.dest_id}`;
+    db.query(query, '', (err, results) => {
+      if (err) {
+        res.status(400).json({
+          deleteDest: "FAILED",
+          reason: err.message
+        });
+      } else {
+        res.json(results.rows);
       }
     });
   }

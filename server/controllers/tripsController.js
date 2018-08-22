@@ -17,14 +17,27 @@ const tripsController = {
     db.query(query, values, (err, results) => {
       if (err) {
         res.status(400).json({
-          login: 'FAILED',
+          addTrip: 'FAILED',
           reason: err.message,
         });
       } else {
         res.json(results.rows);
       }
     });
-  }
+  },
+  deleteTrip: (req, res) => {
+    const query = `DELETE FROM trips WHERE id=${req.body.trip_id}`;
+    db.query(query, '', (err, results) => {
+      if (err) {
+        res.status(400).json({
+          deleteTrip: "FAILED",
+          reason: err.message
+        });
+      } else {
+        res.json(results.rows);
+      }
+    });
+  },
 }
 
 module.exports = tripsController;

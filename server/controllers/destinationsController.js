@@ -14,7 +14,7 @@ const destinationsController = {
   },
   addDestination: (req, res) => {
     const query = `
-      INSERT INTO destinations (name, trip_id, lat, lon, sequence) VALUES($1, $2, $3, $4) RETURNING *
+      INSERT INTO destinations (name, trip_id, lat, lon) VALUES($1, $2, $3, $4) RETURNING *
     `;
     const values = [req.body.name, req.body.trip_id, req.body.lat, req.body.lon];
     db.query(query, values, (err, results) => {

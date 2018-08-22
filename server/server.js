@@ -21,14 +21,19 @@ app.post('/signin', user.signIn, user.startSession);
 app.post('/signup', user.addUser, user.startSession);
 
 // Trip Routes
+app.get('/trips/:id', trips.getTrips);
 app.post('/trips', trips.addTrip);
-app.get('/trips', trips.getTrips);
+app.delete('/trips', trips.deleteTrip);
 
 // Destination routes
+app.get('/dest/:id', dest.getDestinations);
 app.post('/dest', dest.addDestination);
+app.delete('/dest', dest.deleteDestination);
 
-// List routes
+//List routes
+app.get('/list/:id', list.getListItems);
 app.post('/list', list.addListItem);
+app.delete('/list', list.deleteListItem);
 
 app.use(express.static(
   path.resolve(__dirname, '../', 'client'),

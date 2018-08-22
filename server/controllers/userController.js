@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+const bluebird = require('bluebird');
+const jwt = bluebird.promisifyAll(require('jsonwebtoken'));
 const bcrypt = require('bcrypt');
 const db = require('../db/index');
 
@@ -43,35 +44,28 @@ module.exports = {
     }
   },
 
-  startSession: (req, res) => {
-    jwt.sign(
-      newToken(res.locals.username),
-      SECRET,
-      (err, token) => {
-        if (err) {
-          sendError.call(res, 400, err.message);
-        }
-        res.cookie('session', token);
-        return res.status(201).json({ login: 'OK' });
-      },
-    );
+  startSession: async (req, res) => {
+    try {
+      const token = await jwt.sign(newToken(res.locals.username), SECRET);
+      res.cookie('session', token, { httpOnly: true });
+      res.status(201).json({ login: 'OK' });
+    } catch (err) {
+      sendError.call(res, 400, err.message);
+    }
   },
 
-  checkSession: (req, res, next) => {
+  checkSession: async (req, res, next) => {
     if (!req.cookies.session) {
-      return res.redirect('/login');
+      res.redirect('/login');
+      return;
     }
-    return jwt.verify(
-      req.cookies.session,
-      SECRET,
-      (err, decoded) => {
-        if (err) {
-          return res.redirect('/login');
-        }
-        res.locals.username = decoded.sub;
-        return next();
-      },
-    );
+    try {
+      const decoded = await jwt.verify(req.cookies.session, SECRET);
+      res.locals.username = decoded.sub;
+      next();
+    } catch (err) {
+      res.redirect('/login');
+    }
   },
 
   addUser: async (req, res, next) => {

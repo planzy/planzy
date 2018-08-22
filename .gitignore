@@ -1,2 +1,6 @@
 node_modules
 client/js/bundle.js
+.env
+/src/js/env.js
+typings.json
+/typings/

@@ -1,5 +1,5 @@
 node_modules
-client/js/bundle.js
+client/bundle.js
 .env
 /src/js/env.js
 typings.json

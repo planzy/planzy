@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const db = require('../db/index');
 
 const SECRET = process.env.JWT_SECRET;
@@ -10,25 +11,25 @@ const newToken = sub => ({
   exp: Math.floor(Date.now() / 1000) + TTL,
 });
 
+function sendError(code, reason) {
+  this.status(code).json({
+    login: 'FAILED',
+    reason,
+  });
+}
+
 module.exports = {
   signIn: (req, res, next) => {
     next();
   },
 
-  signUp: (req, res, next) => {
-    next();
-  },
-
   startSession: (req, res) => {
     jwt.sign(
-      newToken(req.body.username),
+      newToken(res.locals.username),
       SECRET,
       (err, token) => {
         if (err) {
-          return res.status(400).json({
-            login: 'FAILED',
-            reason: err.message,
-          });
+          sendError.call(res, 400, err.message);
         }
         res.cookie('session', token);
         return res.status(201).json({ login: 'OK' });
@@ -53,22 +54,21 @@ module.exports = {
     );
   },
 
-  renderLogin: (req, res) => {
-    res.send("Here's the login page!");
+  addUser: async (req, res, next) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      sendError.call(res, 400, 'Bad input');
+      return;
+    }
+    try {
+      const hash = await bcrypt.hash(password, 10);
+      const values = [username, hash];
+      const query = 'INSERT INTO users (username, password) VALUES($1, $2) RETURNING *';
+      await db.query(query, values);
+      res.locals.username = username;
+      next();
+    } catch (err) {
+      sendError.call(res, 400, "Couldn't create an account. Please try again later.");
+    }
   },
-
-  addUser: (req, res, next) => {
-    const query = `INSERT INTO users (username, password) VALUES($1, $2) RETURNING *`;
-    const values = [req.body.username, req.body.password];
-    db.query(query, values, (err, results) => {
-      if (err) {
-        res.status(400).send(json({
-          login: 'FAILED',
-          reason: err.message,
-        }));
-      } else {
-        next();
-      }
-    });
-  }
 };

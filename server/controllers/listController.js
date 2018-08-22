@@ -2,8 +2,9 @@ const db = require('../db/index');
 
 const listController = {
   getListItems: (req, res) => {
-    const query = `SELECT * FROM list_items WHERE dest_id=${req.body.dest_id}`;
-    db.query(query, '', (err, results) => {
+    const query = 'SELECT * FROM list_items WHERE dest_id = $1';
+    const values = [req.body.dest_id]
+    db.query(query, values, (err, results) => {
       if (err) {
         res.send(err);
       } else {
@@ -26,8 +27,9 @@ const listController = {
     });
   },
   deleteListItem: (req, res) => {
-    const query = `DELETE FROM list_items WHERE id=${req.body.dest_id}`;
-    db.query(query, '', (err, results) => {
+    const query = 'DELETE FROM list_items WHERE id = $1';
+    const values = [req.body.dest_id]
+    db.query(query, values, (err, results) => {
       if (err) {
         res.status(400).json({
           deleteListItem: "FAILED",

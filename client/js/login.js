@@ -4,8 +4,27 @@ function grab(str) {
   return document.getElementById(str);
 }
 
+const hide = el => el.classList.add('hidden');
+const show = el => el.classList.remove('hidden');
+
+function clearError() {
+  const error = grab('error');
+  hide(error);
+  if (error.firstChild) error.removeChild(error.firstChild);
+}
+
+function displayError(message) {
+  const error = grab('error');
+  const errorMessage = document.createTextNode(message);
+  error.appendChild(errorMessage);
+  show(error);
+  setTimeout(clearError, 2000);
+}
+
 function confirmLogin(res) {
   if (res.login === 'OK') window.location.href = '/';
+  clearError();
+  displayError('Failed to log in!');
 }
 
 const makeFetch = (username, password) => ({

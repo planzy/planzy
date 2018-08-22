@@ -3,7 +3,7 @@ const db = require('../db/index');
 const tripsController = {
   getTrips: (req, res) => {
     const query = `SELECT * FROM trips WHERE user_id = $1`;
-    const values = [req.body.userId];
+    const values = [req.params.id];
     db.query(query, values, (err, results) => {
       if (err) {
         res.send(err);

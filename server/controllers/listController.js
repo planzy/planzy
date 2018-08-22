@@ -3,7 +3,7 @@ const db = require('../db/index');
 const listController = {
   getListItems: (req, res) => {
     const query = 'SELECT * FROM list_items WHERE dest_id = $1';
-    const values = [req.body.dest_id]
+    const values = [req.params.id]
     db.query(query, values, (err, results) => {
       if (err) {
         res.send(err);

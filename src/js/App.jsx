@@ -1,12 +1,11 @@
 import React from "react";
-import Header from "./components/header";
-import Map from "./components/map";
+import Trip from "./components/Trip";
+import "../styles/style.css";
 
 const App = () => {
   return (
     <div className="planzy">
-      <Header />
-      <Map />
+      <Trip />
     </div>
   );
 };

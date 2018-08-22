@@ -31,7 +31,7 @@ class Map extends React.Component {
             "https://maps.googleapis.com/maps/api/js?key=" + MAPS_KEY
           }
           loadingElement="Loading map..."
-          containerElement={<div style={{ height: `400px` }} />}
+          containerElement={<div style={{ height: `100%` }} />}
           mapElement={<div style={{ height: `100%` }} />}
         />
       </div>

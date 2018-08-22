@@ -22,9 +22,12 @@ function displayError(message) {
 }
 
 function confirmLogin(res) {
-  if (res.login === 'OK') window.location.href = '/';
-  clearError();
-  displayError('Failed to log in!');
+  if (res.login === 'OK') {
+    window.location.href = '/';
+  } else {
+    clearError();
+    displayError(res.reason);
+  }
 }
 
 const makeFetch = (username, password) => ({

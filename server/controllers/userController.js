@@ -18,9 +18,29 @@ function sendError(code, reason) {
   });
 }
 
+function logError(err) {
+  console.error(`${err.name}: ${err.message}`);
+}
+
 module.exports = {
-  signIn: (req, res, next) => {
-    next();
+  signIn: async (req, res, next) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      sendError.call(res, 400, 'Bad input');
+      return;
+    }
+    try {
+      const query = 'SELECT password FROM users WHERE username = $1';
+      const values = [username];
+      const result = await db.query(query, values);
+      const valid = await bcrypt.compare(password, result.rows[0].password);
+      if (!valid) throw new Error('Invalid password');
+      res.locals.username = username;
+      next();
+    } catch (err) {
+      logError(err);
+      sendError.call(res, 400, 'Incorrect username or password.');
+    }
   },
 
   startSession: (req, res) => {
@@ -68,6 +88,7 @@ module.exports = {
       res.locals.username = username;
       next();
     } catch (err) {
+      logError(err);
       sendError.call(res, 400, "Couldn't create an account. Please try again later.");
     }
   },

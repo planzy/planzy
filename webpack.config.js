@@ -1,29 +1,32 @@
-const path = require('path');
+const path = require("path");
 
 const rules = [
   {
     test: /\.jsx?$/,
     exclude: /node_modules/,
     use: {
-      loader: 'babel-loader',
+      loader: "babel-loader",
       options: {
-        presets: ['env', 'react'],
-      },
-    },
-  },
+        presets: ["env", "react"]
+      }
+    }
+  }
 ];
 
 module.exports = {
   entry: {
-    main: './src/index.js',
+    main: "./src/js/index.js"
   },
-  mode: 'development',
+  mode: "development",
   module: {
-    rules,
+    rules
   },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'client/js/'),
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "./client")
   },
-  resolve: { extensions: ['.js', '.jsx'] },
+  devServer: {
+    contentBase: path.resolve(__dirname, "./client")
+  },
+  resolve: { extensions: [".js", ".jsx"] }
 };

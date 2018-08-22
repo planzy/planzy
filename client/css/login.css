@@ -7,3 +7,16 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+#error {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #d47496;
+  padding: 1em 4em;
+  border-radius: 2px;
+}
+
+.hidden {
+  display: none;
+}

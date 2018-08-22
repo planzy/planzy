@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./components/header";
-import Map from "./components/map";
+import Header from "./components/Header";
+import Map from "./components/Map";
 
 const App = () => {
   return (

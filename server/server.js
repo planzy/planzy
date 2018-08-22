@@ -16,10 +16,9 @@ app.use(cookieParser());
 
 app.get('/', user.checkSession);
 
-//User Routes
+// User Routes
 app.post('/signin', user.signIn, user.startSession);
-app.post('/signup', user.signUp, user.addUser, user.startSession);
-app.post('/users', user.addUser);
+app.post('/signup', user.addUser, user.startSession);
 
 // Trip Routes
 app.post('/trips', trips.addTrip);

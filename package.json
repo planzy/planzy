@@ -7,7 +7,8 @@
     "start": "webpack-dev-server --mode development --inline",
     "dev": "npm run start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "server": "nodemon server/"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,13 @@
   },
   "homepage": "https://github.com/planzy/planzy#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "nodemon": "^1.18.3",
+    "pg": "^7.4.3",
+    "jsonwebtoken": "^8.3.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-google-maps": "^9.4.5",

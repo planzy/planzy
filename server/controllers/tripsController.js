@@ -41,14 +41,14 @@ const tripsController = {
     });
   },
   viewTrip: (req, res) => {
-    const query = `select trips.id as "tripId", trips.name as "tripName", 
+    const query = `SELECT trips.id as "tripId", trips.name as "tripName", 
       destinations.id as "destId", destinations.name as "destName",
       destinations.lat as "destLat", destinations.lon as "destLon",
       list_items.name as "listItemName"
-      from list_items
-      join destinations on destinations.id = list_items.dest_id
+      FROM list_items
+      JOIN destinations on destinations.id = list_items.dest_id
       join trips on trips.id = destinations.trip_id
-      where trips.id = $1`
+      WHERE trips.id = $1`
     const values = [req.body.tripId];
     db.query(query, values, (err, results) => {
       if (err) {

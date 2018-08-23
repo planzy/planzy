@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 const Destinations = ({ destinations, changeDestId }) => {
+
   return (
     <div className="destinations">
       {destinations.map((dest, i) => {

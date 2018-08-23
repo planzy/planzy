@@ -8,7 +8,7 @@ class Trip extends Component {
     super(props);
     this.state = {
       destinations: [],
-      destId: undefined,
+      destId: 0,
     };
 
     this.changeDestId = this.changeDestId.bind(this);
@@ -29,14 +29,18 @@ class Trip extends Component {
   changeDestId(event) {
     console.log(event.target.id);
     this.setState({
-      destId: event.target.id,
+      destId: parseInt(event.target.id),
     })
   }
 
   render() {
     return (
       <div className="trip">
-        <Route destinations={this.state.destinations} changeDestId={this.changeDestId} />
+        <Route 
+          destId={this.state.destId} 
+          destinations={this.state.destinations}
+          changeDestId={this.changeDestId}
+        />
         <Map destinations={this.state.destinations} />
       </div>
     );

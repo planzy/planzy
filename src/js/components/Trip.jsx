@@ -10,9 +10,11 @@ class Trip extends Component {
   }
 
   componentDidMount() {
-    fetch(`/dest/${this.props.key || 2}`)
+    fetch(`/trips/${this.props.tripId || 2}`)
       .then(res => res.json())
-      .then(destinations => this.setState({ destinations }))
+      .then((destinations) => {
+        this.setState({ destinations });
+      })
       .catch(console.error);
   }
 

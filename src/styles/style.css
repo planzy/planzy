@@ -1,0 +1,28 @@
+.root {
+  background-color: #fafafa;
+}
+
+.planzy {
+  height: 100vh;
+}
+
+.trip {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+}
+
+.map {
+  grid-column: span 2;
+}
+
+.header {
+  height: 60px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.waypoints {
+  height: 90%;
+}

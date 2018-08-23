@@ -28,7 +28,7 @@ const tripsController = {
   },
   deleteTrip: (req, res) => {
     const query = 'DELETE FROM trips WHERE id = $1';
-    const values = [req.body.trip_id];
+    const values = [req.body.tripId];
     db.query(query, values, (err, results) => {
       if (err) {
         res.status(400).json({
@@ -40,6 +40,27 @@ const tripsController = {
       }
     });
   },
+  viewTrip: (req, res) => {
+    const query = `SELECT trips.id as "tripId", trips.name as "tripName", 
+      destinations.id as "destId", destinations.name as "destName",
+      destinations.lat as "destLat", destinations.lon as "destLon",
+      list_items.name as "listItemName"
+      FROM list_items
+      JOIN destinations on destinations.id = list_items.dest_id
+      join trips on trips.id = destinations.trip_id
+      WHERE trips.id = $1`
+    const values = [req.body.tripId];
+    db.query(query, values, (err, results) => {
+      if (err) {
+        res.status(400).json({
+          viewTrip: 'FAILED',
+          reason: err.message
+        });
+      } else {
+        res.json(results.rows);
+      }
+    });
+  }
 }
 
 module.exports = tripsController;

@@ -43,6 +43,7 @@ const tripsController = {
   viewTrip: (req, res) => {
     const query = `select trips.id as "tripId", trips.name as "tripName", 
       destinations.id as "destId", destinations.name as "destName",
+      destinations.lat as "destLat", destinations.lon as "destLon",
       list_items.name as "listItemName"
       from list_items
       join destinations on destinations.id = list_items.dest_id

@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const trips = require('./controllers/tripsController');
 const user = require('./controllers/userController');
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 const singleStatic = (route, filePath) =>
   app.get(route, (req, res) => {
@@ -32,7 +34,7 @@ app.use(user.checkSession);
 
 // Trip Routes
 app.get('/trips/:tripId', trips.viewTrip);
-app.get('/user/:id/trips', trips.getTrips);
+app.get('/user/trips', trips.getTrips);
 app.post('/trips', trips.addTrip);
 app.delete('/trips', trips.deleteTrip);
 

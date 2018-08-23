@@ -31,7 +31,7 @@ module.exports = {
       return;
     }
     try {
-      const query = 'SELECT password FROM users WHERE username = $1';
+      const query = 'SELECT * FROM users WHERE username = $1';
       const values = [username];
       const result = await db.query(query, values);
       const valid = await bcrypt.compare(password, result.rows[0].password);

@@ -11,7 +11,9 @@ class Trip extends Component {
 
   componentDidMount() {
     fetch(`/trips/${this.props.tripId || 2}`)
-      .then(res => res.json())
+      .then(res => {
+        return res.json();
+      })
       .then((destinations) => {
         this.setState({ destinations });
       })

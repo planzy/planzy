@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import Destinations from "./Destinations";
 
-class Route extends Component {
-  render() {
-    return (
-      <div className="route">
-        <Destinations />
-      </div>
-    );
-  }
+const Route = ({ destinations, changeDestId }) => {
+  return (
+    <div className="route">
+      <Destinations changeDestId={changeDestId} destinations={destinations} />
+    </div>
+  );
 }
 
 export default Destinations;

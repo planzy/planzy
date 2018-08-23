@@ -50,7 +50,18 @@ body {
 
 
 /* ///////////////////////////// */
-/* NAV */
+/* Destinations */
 /* ///////////////////////////// */
 
+.destinations {
+  height: 50%;
+  margin: 20px 0;
+  border-top: 2px solid grey;
+}
+
+.destination {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid grey;
+}
 

@@ -6,7 +6,13 @@ import Map from './Map';
 class Trip extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      destinations: [],
+      destId: undefined,
+    };
+
+    this.changeDestId = this.changeDestId.bind(this);
+
   }
 
   componentDidMount() {
@@ -20,10 +26,17 @@ class Trip extends Component {
       .catch(console.error);
   }
 
+  changeDestId(event) {
+    console.log(event.target.id);
+    this.setState({
+      destId: event.target.id,
+    })
+  }
+
   render() {
     return (
       <div className="trip">
-        <Route />
+        <Route destinations={this.state.destinations} changeDestId={this.changeDestId} />
         <Map destinations={this.state.destinations} />
       </div>
     );

@@ -2,6 +2,11 @@
   background-color: #fafafa;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .planzy {
   height: 100vh;
 }
@@ -9,7 +14,7 @@
 .trip {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 3fr;
   height: 100%;
 }
 
@@ -26,3 +31,26 @@
 .waypoints {
   height: 90%;
 }
+
+
+/* ///////////////////////////// */
+/* NAV */
+/* ///////////////////////////// */
+
+.nav {
+  height: 75px;
+  background-color: coral;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+
+
+
+/* ///////////////////////////// */
+/* NAV */
+/* ///////////////////////////// */
+
+

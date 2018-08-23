@@ -13,6 +13,7 @@ const tripsController = {
     });
   },
   addTrip: (req, res) => {
+    console.log(req.body);
     const query = 'INSERT INTO trips (user_id, name) VALUES($1, $2) RETURNING *';
     const values = [req.body.user_id, req.body.name];
     db.query(query, values, (err, results) => {

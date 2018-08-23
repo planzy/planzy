@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+
 app.get('/', user.checkSession);
 
 // User Routes

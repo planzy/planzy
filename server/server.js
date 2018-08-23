@@ -21,7 +21,8 @@ app.post('/signin', user.signIn, user.startSession);
 app.post('/signup', user.addUser, user.startSession);
 
 // Trip Routes
-app.get('/trips/:id', trips.getTrips);
+app.get('/trips/:tripId', trips.viewTrip);
+app.get('/user/:id/trips', trips.getTrips);
 app.post('/trips', trips.addTrip);
 app.delete('/trips', trips.deleteTrip);
 

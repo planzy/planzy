@@ -1,5 +1,29 @@
 const db = require('../db/index');
 
+const serializeTrip = (rows) => {
+  const trip = [];
+
+  rows.forEach((row) => {
+    if (!trip[row.destId]) {
+      trip[row.destId] = {
+        id: row.destId,
+        name: row.tripName,
+        lat: row.destLat,
+        lng: row.destLon,
+        items: [],
+      };
+    }
+
+    trip[row.destId].items.push({
+      id: row.listItemId,
+      text: row.listItemName,
+    });
+  });
+
+  // remove empty elements from array
+  return trip.filter(Boolean);
+};
+
 const tripsController = {
   getTrips: (req, res) => {
     const query = `SELECT * FROM trips WHERE user_id = $1`;
@@ -41,15 +65,15 @@ const tripsController = {
     });
   },
   viewTrip: (req, res) => {
-    const query = `SELECT trips.id as "tripId", trips.name as "tripName", 
+    const query = `SELECT trips.id as "tripId", trips.name as "tripName",
       destinations.id as "destId", destinations.name as "destName",
       destinations.lat as "destLat", destinations.lon as "destLon",
-      list_items.name as "listItemName"
+      list_items.id as "listItemId", list_items.name as "listItemName"
       FROM list_items
       JOIN destinations on destinations.id = list_items.dest_id
       join trips on trips.id = destinations.trip_id
       WHERE trips.id = $1`
-    const values = [req.body.tripId];
+    const values = [req.params.tripId];
     db.query(query, values, (err, results) => {
       if (err) {
         res.status(400).json({
@@ -57,7 +81,7 @@ const tripsController = {
           reason: err.message
         });
       } else {
-        res.json(results.rows);
+        res.json(serializeTrip(results.rows));
       }
     });
   }

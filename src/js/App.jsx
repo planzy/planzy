@@ -76,7 +76,7 @@ class App extends Component {
 
   render() {
 
-    const { trips, username, value } = this.state;
+    const { trips, username, value, tripId } = this.state;
 
     return (
       <div>
@@ -89,7 +89,7 @@ class App extends Component {
           handleChange={this.handleChange}
         />
         <div className="planzy">
-          <Trip />
+          <Trip tripId={tripId} />
         </div>
       </div >
     );

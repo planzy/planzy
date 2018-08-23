@@ -5,6 +5,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .planzy {
@@ -32,6 +33,32 @@ body {
   height: 90%;
 }
 
+.btn {
+  border: none;
+  padding: 8px 15px;
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+input {
+  margin-right: 10px;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 20px;
+  border: none;
+  width: 200px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.user-name {
+  color: white;
+  font-size: 18px;
+}
 
 /* ///////////////////////////// */
 /* NAV */
@@ -47,15 +74,14 @@ body {
 }
 
 
-
-
 /* ///////////////////////////// */
 /* Destinations */
 /* ///////////////////////////// */
 
 .destinations {
   height: 50%;
-  margin: 20px 0;
+  overflow: scroll;
+  margin: 15px 0;
   border-top: 2px solid grey;
 }
 
@@ -63,5 +89,11 @@ body {
   padding: 20px;
   text-align: center;
   border-bottom: 2px solid grey;
+  transition: all .2s ease;
+}
+
+.destination:hover {
+  background-color: #eee;
+  cursor: pointer;
 }
 

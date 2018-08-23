@@ -10,7 +10,7 @@ const Nav = ({
 }) => (
     <div className="nav" >
       <div className="nav-dropdown">
-        <select value={value} onChange={(event) => handleChangeTrip(event)}>
+        <select className="select" value={value} onChange={(event) => handleChangeTrip(event)}>
           {trips.map((trip, i) => {
             return <option key={`trip${i}`} id={trip.id} value={trip.name}>{trip.name}</option>
           })}

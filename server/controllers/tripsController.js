@@ -72,8 +72,8 @@ const tripsController = {
       destinations.lat as "destLat", destinations.lon as "destLon",
       list_items.id as "listItemId", list_items.name as "listItemName"
       FROM list_items
-      JOIN destinations on destinations.id = list_items.dest_id
-      join trips on trips.id = destinations.trip_id
+      FULL OUTER JOIN destinations on destinations.id = list_items.dest_id
+      FULL OUTER JOIN trips on trips.id = destinations.trip_id
       WHERE trips.id = $1`
     const values = [req.params.tripId];
     db.query(query, values, (err, results) => {

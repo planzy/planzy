@@ -36,7 +36,7 @@ module.exports = {
       const result = await db.query(query, values);
       const valid = await bcrypt.compare(password, result.rows[0].password);
       if (!valid) throw new Error('Invalid password');
-      res.locals.username = username;
+      res.locals.id = result.rows[0].id;
       next();
     } catch (err) {
       logError(err);
@@ -46,7 +46,7 @@ module.exports = {
 
   startSession: async (req, res) => {
     try {
-      const token = await jwt.sign(newToken(res.locals.username), SECRET);
+      const token = await jwt.sign(newToken(res.locals.id), SECRET);
       res.cookie('session', token, { httpOnly: true });
       res.status(201).json({ login: 'OK' });
     } catch (err) {
@@ -61,7 +61,7 @@ module.exports = {
     }
     try {
       const decoded = await jwt.verify(req.cookies.session, SECRET);
-      res.locals.username = decoded.sub;
+      res.locals.id = decoded.sub;
       next();
     } catch (err) {
       res.redirect('/login');
@@ -78,8 +78,8 @@ module.exports = {
       const hash = await bcrypt.hash(password, 10);
       const values = [username, hash];
       const query = 'INSERT INTO users (username, password) VALUES($1, $2) RETURNING *';
-      await db.query(query, values);
-      res.locals.username = username;
+      const result = await db.query(query, values);
+      res.locals.id = result.rows[0].id;
       next();
     } catch (err) {
       logError(err);

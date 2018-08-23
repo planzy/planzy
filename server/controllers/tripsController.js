@@ -26,23 +26,19 @@ const serializeTrip = (rows) => {
 
 const tripsController = {
   getTrips: (req, res) => {
-    console.log(res.locals);
     const query = `
     SELECT trips.id, trips.name, username FROM trips FULL OUTER JOIN users on users.id = trips.user_id WHERE users.id = $1 
     `;
     const values = [res.locals.id];
     db.query(query, values, (err, results) => {
       if (err) {
-        console.log(err);
         res.send(err);
       } else {
-        console.log(results.rows);
         res.json({ username: results.rows[0].username, trips: results.rows });
       }
     });
   },
   addTrip: (req, res) => {
-    console.log(res.locals.id);
     const query = 'INSERT INTO trips (user_id, name) VALUES($1, $2) RETURNING *';
     const values = [res.locals.id, req.body.name];
     db.query(query, values, (err, results) => {
@@ -71,7 +67,6 @@ const tripsController = {
     });
   },
   viewTrip: (req, res) => {
-    console.log('a visitor!');
     const query = `SELECT trips.id as "tripId", trips.name as "tripName",
       destinations.id as "destId", destinations.name as "destName",
       destinations.lat as "destLat", destinations.lon as "destLon",

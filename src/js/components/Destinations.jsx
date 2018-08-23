@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 
-class Destinations extends Component {
-  render() {
-    return <div className="destinations" />;
-  }
+const Destinations = ({ destinations, changeDestId }) => {
+  return (
+    <div className="destinations">
+      {destinations.map((dest, i) => {
+        return <div key={`dest${i}`} className="destination" id={dest.id} onClick={(event) => changeDestId(event)}>{dest.name}</div>
+      })}
+    </div>
+  )
 }
 
 export default Destinations;

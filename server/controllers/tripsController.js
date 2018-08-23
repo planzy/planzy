@@ -7,7 +7,7 @@ const serializeTrip = (rows) => {
     if (!trip[row.destId]) {
       trip[row.destId] = {
         id: row.destId,
-        name: row.tripName,
+        name: row.destName,
         lat: row.destLat,
         lng: row.destLon,
         items: [],

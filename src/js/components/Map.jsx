@@ -18,7 +18,7 @@ const MapWithMarkers = withScriptjs(withGoogleMap(({ destinations }) => (
     {destinations && destinations.map(dest => (
       <Marker
         key={dest.id}
-        position={{ lat: dest.lat, lng: dest.lon }}
+        position={{ lat: dest.lat, lng: dest.lng }}
       />
     ))}
   </GoogleMap>

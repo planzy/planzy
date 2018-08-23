@@ -1,4 +1,6 @@
-const jwt = require('jsonwebtoken');
+const bluebird = require('bluebird');
+const jwt = bluebird.promisifyAll(require('jsonwebtoken'));
+const bcrypt = require('bcrypt');
 const db = require('../db/index');
 
 const SECRET = process.env.JWT_SECRET;
@@ -10,65 +12,78 @@ const newToken = sub => ({
   exp: Math.floor(Date.now() / 1000) + TTL,
 });
 
+function sendError(code, reason) {
+  this.status(code).json({
+    login: 'FAILED',
+    reason,
+  });
+}
+
+function logError(err) {
+  console.error(`${err.name}: ${err.message}`);
+}
+
 module.exports = {
-  signIn: (req, res, next) => {
-    next();
-  },
-
-  signUp: (req, res, next) => {
-    next();
-  },
-
-  startSession: (req, res) => {
-    jwt.sign(
-      newToken(req.body.username),
-      SECRET,
-      (err, token) => {
-        if (err) {
-          return res.status(400).json({
-            login: 'FAILED',
-            reason: err.message,
-          });
-        }
-        res.cookie('session', token);
-        return res.status(201).json({ login: 'OK' });
-      },
-    );
-  },
-
-  checkSession: (req, res, next) => {
-    if (!req.cookies.session) {
-      return res.redirect('/login');
+  signIn: async (req, res, next) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      sendError.call(res, 400, 'Bad input');
+      return;
     }
-    return jwt.verify(
-      req.cookies.session,
-      SECRET,
-      (err, decoded) => {
-        if (err) {
-          return res.redirect('/login');
-        }
-        res.locals.username = decoded.sub;
-        return next();
-      },
-    );
+    try {
+      const query = 'SELECT password FROM users WHERE username = $1';
+      const values = [username];
+      const result = await db.query(query, values);
+      const valid = await bcrypt.compare(password, result.rows[0].password);
+      if (!valid) throw new Error('Invalid password');
+      res.locals.username = username;
+      next();
+    } catch (err) {
+      logError(err);
+      sendError.call(res, 400, 'Incorrect username or password.');
+    }
   },
 
-  renderLogin: (req, res) => {
-    res.send("Here's the login page!");
+  startSession: async (req, res) => {
+    try {
+      const token = await jwt.sign(newToken(res.locals.username), SECRET);
+      res.cookie('session', token, { httpOnly: true });
+      res.status(201).json({ login: 'OK' });
+    } catch (err) {
+      sendError.call(res, 400, err.message);
+    }
   },
 
-  addUser: (req, res, next) => {
-    const query = `INSERT INTO users (username, password) VALUES($1, $2) RETURNING *`;
-    const values = [req.body.username, req.body.password];
-    db.query(query, values, (err, results) => {
-      if (err) {
-        res.status(400).send(json({
-          login: 'FAILED',
-          reason: err.message,
-        }));
-      } else {
-        next();
-      }
-    });
-  }
+  checkSession: async (req, res, next) => {
+    if (!req.cookies.session) {
+      res.redirect('/login');
+      return;
+    }
+    try {
+      const decoded = await jwt.verify(req.cookies.session, SECRET);
+      res.locals.username = decoded.sub;
+      next();
+    } catch (err) {
+      res.redirect('/login');
+    }
+  },
+
+  addUser: async (req, res, next) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      sendError.call(res, 400, 'Bad input');
+      return;
+    }
+    try {
+      const hash = await bcrypt.hash(password, 10);
+      const values = [username, hash];
+      const query = 'INSERT INTO users (username, password) VALUES($1, $2) RETURNING *';
+      await db.query(query, values);
+      res.locals.username = username;
+      next();
+    } catch (err) {
+      logError(err);
+      sendError.call(res, 400, "Couldn't create an account. Please try again later.");
+    }
+  },
 };

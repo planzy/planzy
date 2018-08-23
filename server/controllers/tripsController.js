@@ -2,8 +2,9 @@ const db = require('../db/index');
 
 const tripsController = {
   getTrips: (req, res) => {
-    const query = `SELECT * FROM trips WHERE user_id=${req.body.userId}`;
-    db.query(query, '', (err, results) => {
+    const query = `SELECT * FROM trips WHERE user_id = $1`;
+    const values = [req.params.id];
+    db.query(query, values, (err, results) => {
       if (err) {
         res.send(err);
       } else {
@@ -17,14 +18,28 @@ const tripsController = {
     db.query(query, values, (err, results) => {
       if (err) {
         res.status(400).json({
-          login: 'FAILED',
+          addTrip: 'FAILED',
           reason: err.message,
         });
       } else {
         res.json(results.rows);
       }
     });
-  }
+  },
+  deleteTrip: (req, res) => {
+    const query = 'DELETE FROM trips WHERE id = $1';
+    const values = [req.body.trip_id];
+    db.query(query, values, (err, results) => {
+      if (err) {
+        res.status(400).json({
+          deleteTrip: "FAILED",
+          reason: err.message
+        });
+      } else {
+        res.json(results.rows);
+      }
+    });
+  },
 }
 
 module.exports = tripsController;

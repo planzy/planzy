@@ -1,11 +1,19 @@
 body {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
 }
 
 .sign-in-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: coral;
+  padding: 20px;
+  border-radius: 5px;
 }
 
 #error {
@@ -19,4 +27,27 @@ body {
 
 .hidden {
   display: none;
+}
+
+input {
+  margin-right: 10px;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 20px;
+  border: none;
+  width: 200px;
+  margin-bottom: 20px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.btn {
+  border: none;
+  padding: 8px 15px;
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 5px;
+  font-size: 12px;
 }

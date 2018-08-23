@@ -12,7 +12,20 @@ class Trip extends Component {
     };
 
     this.changeDestId = this.changeDestId.bind(this);
+  }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.tripId !== this.props.tripId) {
+      console.log('flicker');
+      fetch(`/trips/${this.props.tripId || 2}`)
+        .then(res => {
+          return res.json();
+        })
+        .then((destinations) => {
+          this.setState({ destinations });
+        })
+        .catch(console.error);
+    }
   }
 
   componentDidMount() {

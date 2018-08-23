@@ -30,7 +30,11 @@ module.exports = {
     path: path.resolve(__dirname, "./client")
   },
   devServer: {
-    contentBase: path.resolve(__dirname, "./client")
+    contentBase: path.resolve(__dirname, "./client"),
+    proxy: {
+      context: () => true,
+      target: 'http://localhost:3000'
+    }
   },
   resolve: { extensions: [".js", ".jsx"] }
 };

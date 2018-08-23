@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Plan your trips with Planzy!",
   "main": "webpack.config.js",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "start": "webpack-dev-server --mode development --inline",
     "dev": "npm run start",
@@ -25,6 +26,7 @@
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "css-loader": "^1.0.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",

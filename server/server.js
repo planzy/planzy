@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const trips = require('./controllers/tripsController');
 const user = require('./controllers/userController');
@@ -13,16 +14,27 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
+const singleStatic = (route, filePath) =>
+  app.get(route, (req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', filePath));
+  });
 
-app.get('/', user.checkSession);
+singleStatic('/login', 'client/login.html');
+singleStatic('/js/login.js', 'client/js/login.js');
+singleStatic('/css/login.css', 'client/css/login.css');
 
 // User Routes
 app.post('/signin', user.signIn, user.startSession);
 app.post('/signup', user.addUser, user.startSession);
 
+// Hide all other routes behind JWT validation
+app.use(user.checkSession);
+
 // Trip Routes
-app.get('/trips/:id', trips.getTrips);
+app.get('/trips/:tripId', trips.viewTrip);
+app.get('/user/trips', trips.getTrips);
 app.post('/trips', trips.addTrip);
 app.delete('/trips', trips.deleteTrip);
 
@@ -31,7 +43,7 @@ app.get('/dest/:id', dest.getDestinations);
 app.post('/dest', dest.addDestination);
 app.delete('/dest', dest.deleteDestination);
 
-//List routes
+// List routes
 app.get('/list/:id', list.getListItems);
 app.post('/list', list.addListItem);
 app.delete('/list', list.deleteListItem);

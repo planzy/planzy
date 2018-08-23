@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import Header from "./Header";
-import Waypoints from "./Waypoints";
+import Destinations from "./Destinations";
 
 class Route extends Component {
   render() {
     return (
       <div className="route">
-        <Header />
-        <Waypoints />
+        <Destinations />
       </div>
     );
   }
 }
 
-export default Route;
+export default Destinations;

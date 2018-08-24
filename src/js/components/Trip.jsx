@@ -12,27 +12,23 @@ class Trip extends Component {
     };
 
     this.changeDestId = this.changeDestId.bind(this);
+    this.addListItem = this.addListItem.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.tripId !== this.props.tripId) {
       console.log('flicker');
-      fetch(`/trips/${this.props.tripId || 2}`)
-        .then(res => {
-          return res.json();
-        })
-        .then((destinations) => {
-          this.setState({ destinations });
-        })
-        .catch(console.error);
+      this.loadTrip();
     }
   }
 
   componentDidMount() {
+    this.loadTrip();
+  }
+
+  loadTrip() {
     fetch(`/trips/${this.props.tripId || 2}`)
-      .then(res => {
-        return res.json();
-      })
+      .then(res => res.json())
       .then((destinations) => {
         this.setState({ destinations });
       })
@@ -40,19 +36,34 @@ class Trip extends Component {
   }
 
   changeDestId(event) {
-    console.log(event.target.id);
     this.setState({
       destId: parseInt(event.target.id),
     })
   }
 
+  addListItem(event) {
+    event.preventDefault();
+    const dest_id = event.target[0].id.slice(4);
+    const name = event.target[0].value;
+    const body = JSON.stringify({ dest_id, name });
+    fetch('/list', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+      .then(() => this.loadTrip())
+      .catch(console.error);
+  }
+
   render() {
     return (
       <div className="trip">
-        <Route 
-          destId={this.state.destId} 
+        <Route
+          destId={this.state.destId}
           destinations={this.state.destinations}
           changeDestId={this.changeDestId}
+          addListItem={this.addListItem}
         />
         <Map destinations={this.state.destinations} />
       </div>

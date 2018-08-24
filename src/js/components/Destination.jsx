@@ -1,4 +1,4 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
 import { ListItem } from './ListItem';
 import { ListItemInput } from './ListItemInput.jsx';
 
@@ -7,13 +7,13 @@ export const Destination = props => {
     return (<ListItem text={item.text} key={`item${index}`}/>);
   }) : [];
   console.log(props);
-return (
-  <div>
-    {props.name}
-    {/* <ListItemInput  handleSubmit={addListItem} /> */}
-    <ul>
-      {listItems}
-    </ul>
-  </div>
-);
+  return (
+    <div>
+      {props.name}
+      <ListItemInput dest={props.id} handleSubmit={props.addListItem} />
+      <ul>
+        {listItems}
+      </ul>
+    </div>
+  );
 }

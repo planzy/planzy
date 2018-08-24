@@ -13,15 +13,19 @@ const listController = {
     });
   },
   addListItem: (req, res) => {
+    console.log('sup!');
     const query = 'INSERT INTO list_items (dest_id, name) VALUES($1, $2) RETURNING *'
     const values = [req.body.dest_id, req.body.name];
+    console.log(values);
     db.query(query, values, (err, results) => {
       if (err) {
         res.status(400).json({
           addList: 'FAILED',
           reason: err.message,
         });
+        console.error(err);
       } else {
+        console.log('nice');
         res.status(200).send(results.rows);
       }
     });

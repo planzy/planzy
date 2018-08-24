@@ -1,10 +1,10 @@
 import React from 'react';
 
-export const ListItemInput = ({ handleSubmit }) => (
+export const ListItemInput = ({ dest, handleSubmit }) => (
   <div>
-    <form>
-      <input type="text" placeholder="itinerary item"></input>
-      <button type="submit">+</button>jk
+    <form onSubmit={handleSubmit}>
+      <input id={`form${dest}`} type="text" placeholder="itinerary item" />
+      <button type="submit">+</button>
     </form>
   </div>
 )

@@ -45,6 +45,7 @@ class Trip extends Component {
     event.preventDefault();
     const dest_id = event.target[0].id.slice(4);
     const name = event.target[0].value;
+    event.target[0].value = '';
     const body = JSON.stringify({ dest_id, name });
     fetch('/list', {
       method: 'POST',
